@@ -1,0 +1,53 @@
+#!/usr/bin/env node
+
+var fs = require('fs');
+var util = require('util');
+var pathFn = require('path');
+var Server = require('../server');
+
+var argv = parseArgv();
+
+// output help msg
+if (argv.help) {
+  return console.log("\n\
+  Usage :\
+    \n\
+    http [option]\n\
+    \n\
+    -h|--help    帮助信息\n\
+    -p|--port    指定端口     默认5000\n\
+    -r|--root    指定根目录   默认当前目录\n\
+    \n");
+}
+
+
+var s = new Server({
+  port: argv.port,
+  root: argv.root
+});
+var url = 'http://localhost:' + s.server.address().port;
+var cp = require('child_process').exec('start ' + url);
+
+function parseArgv() {
+  var ret = {};
+  var args = process.argv.slice(2);
+  if (!args) return ret;
+
+  for (var i = 0; i < args.length; i++) {
+    var arg = args[i];
+
+    if (arg == '-h' || arg == '--help') {
+      ret.help = true;
+    }
+    else if (arg == "--port" || arg == "-p") {
+      ret.port = +(args[++i]);
+      continue;
+    }
+    else if (arg == '-r' || arg == "--root") {
+      ret.root = args[++i];
+      continue;
+    }
+  }
+
+  return ret;
+}
