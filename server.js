@@ -11,7 +11,7 @@ var util = require('util');
 var parse = require('url').parse;
 var zlib = require('zlib');
 var razor = require('razor-tmpl');
-var mime = require('./mime');
+var mime = require('mime');
 
 // patch fs.existAsync
 fs.existsAsync = function(path) {
@@ -74,7 +74,7 @@ Server.prototype.requestListener = co.wrap(function*(req, res) {
 
   // mime header
   var ext = pathFn.extname(file).slice(1);
-  res.setHeader("Content-Type", mime[ext] || mime["default"]);
+  res.setHeader("Content-Type", mime.lookup(ext));
   res.setHeader("Server", 'http-static-server');
 
   //do cache
