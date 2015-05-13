@@ -35,12 +35,6 @@ function Server(options) {
 
   // createServer
   this.server = http.createServer(this.requestListener.bind(this));
-
-  // listen
-  this.server.listen(this.port, function() {
-    process.title = "localhost@" + this.address().port;
-    console.log("http-static-server served at http://localhost:" + this.address().port);
-  });
 }
 
 /**
@@ -200,3 +194,18 @@ Server.prototype.listDirAsync = co.wrap(function * (req, res) {
     res.end(util.format("Can't get %s", url));
   }
 });
+
+Server.prototype.listen = function() {
+  var self = this;
+
+  return new Promise(function(resolve, reject) {
+    self.server.listen(self.port, function(err) {
+      if (err) {
+        return reject(err);
+      }
+
+      var url = 'http://localhost:' + this.address().port;
+      resolve(url);
+    });
+  });
+};

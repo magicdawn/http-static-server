@@ -1,23 +1,31 @@
 #!/usr/bin/env node
 
+/* jshint multistr:true */
+
+/**
+ * module dependencies
+ */
 var fs = require('fs');
 var util = require('util');
 var pathFn = require('path');
 var Server = require('../server');
 
+// parse argv
 var argv = parseArgv();
 
 // output help msg
 if (argv.help) {
-  return console.log("\n\
+  return console.log(
+    "\n\
   Usage :\
     \n\
     http [option]\n\
     \n\
     -h|--help    帮助信息\n\
-    -p|--port    指定端口     默认5000\n\
+    -p|--port    指定端口     默认随机端口\n\
     -r|--root    指定根目录   默认当前目录\n\
-    \n");
+    \n"
+  );
 }
 
 
@@ -25,8 +33,13 @@ var s = new Server({
   port: argv.port,
   root: argv.root
 });
-var url = 'http://localhost:' + s.server.address().port;
-var cp = require('child_process').exec('start ' + url);
+
+s.listen().then(function(url) {
+  process.title = "localhost@" + s.server.address().port;
+  console.log("http-static-server served at " + url);
+  var cp = require('child_process').exec('start ' + url);
+}).catch(console.error);
+
 
 function parseArgv() {
   var ret = {};
