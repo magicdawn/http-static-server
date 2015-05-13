@@ -48,7 +48,7 @@ function Server(options) {
  *
  * for request event
  */
-Server.prototype.requestListener = co.wrap(function*(req, res) {
+Server.prototype.requestListener = co.wrap(function * (req, res) {
   req.url = decodeURI(req.url);
 
   // /abc => /abc/
@@ -60,13 +60,11 @@ Server.prototype.requestListener = co.wrap(function*(req, res) {
     return;
   }
 
-  var file =
-    yield this.getFileAsync(req, res);
+  var file = yield this.getFileAsync(req, res);
   if (!file) return; // already handled
 
   // if file not exists
-  if (!(
-      yield fs.existsAsync(file))) {
+  if (!(yield fs.existsAsync(file))) {
     res.writeHead(404);
     res.end('Not found');
     return;
@@ -84,15 +82,14 @@ Server.prototype.requestListener = co.wrap(function*(req, res) {
   res.setHeader("Expires", now.toUTCString());
 
   try {
-    var fd =
-      yield fs.openAsync(file, "r");
-    var s =
-      yield fs.fstatAsync(fd);
+    var fd = yield fs.openAsync(file, "r");
+    var s = yield fs.fstatAsync(fd);
 
     var mtime = s.mtime.toUTCString();
     res.setHeader("Last-Modified", mtime); //最后修改时间
 
-    if (req.headers["if-modified-since"] && req.headers["if-modified-since"] === mtime) {
+    if (req.headers["if-modified-since"] &&
+      req.headers["if-modified-since"] === mtime) {
       //未修改
       res.writeHead(304);
       res.end();
@@ -110,7 +107,7 @@ Server.prototype.requestListener = co.wrap(function*(req, res) {
   }
 });
 
-Server.prototype.getFileAsync = co.wrap(function*(req, res) {
+Server.prototype.getFileAsync = co.wrap(function * (req, res) {
   var url = decodeURI(parse(req.url).pathname); //本来已经decode过了,但是parse里面会把空格变成 %20
 
   // not legal
@@ -123,13 +120,11 @@ Server.prototype.getFileAsync = co.wrap(function*(req, res) {
 
   // check index files
   if (url.slice(-1) === '/') {
-    if (
-      yield fs.existsAsync(this.root + url + 'index.html')) {
+    if (yield fs.existsAsync(this.root + url + 'index.html')) {
       return this.root + url + 'index.html';
     }
 
-    if (
-      yield fs.existsAsync(this.root + url + 'index.htm')) {
+    if (yield fs.existsAsync(this.root + url + 'index.htm')) {
       return this.root + url + 'index.htm';
     }
 
@@ -159,14 +154,13 @@ Server.prototype.sendFile = function(req, res, fd) {
   stream.pipe(res);
 };
 
-Server.prototype.listDirAsync = co.wrap(function*(req, res) {
+Server.prototype.listDirAsync = co.wrap(function * (req, res) {
   var self = this;
   var url = req.url;
   var dir = this.root + url;
 
   try {
-    var contents =
-      yield fs.readdirAsync(dir);
+    var contents = yield fs.readdirAsync(dir);
 
     var files = [];
     var dirs = [];
@@ -174,14 +168,13 @@ Server.prototype.listDirAsync = co.wrap(function*(req, res) {
     for (var i = 0; i < contents.length; i++) {
       var c = contents[i];
       var file = self.root + url + c;
-      var s =
-        yield fs.statAsync(file);
+      var s = yield fs.statAsync(file);
 
       if (s.isDirectory())
-        dirs.push(c)
+        dirs.push(c);
       else if (s.isFile())
         files.push(c);
-    };
+    }
 
     dirs.sort();
     files.sort();
