@@ -188,8 +188,7 @@ Server.prototype.listDirAsync = co.wrap(function * (req, res) {
   }
   catch (e) {
     console.error("列出目录出错 : %s", url);
-    console.error(e);
-    console.error(e.stack);
+    console.error(e.stack || e);
     res.writeHead(404);
     res.end(util.format("Can't get %s", url));
   }
