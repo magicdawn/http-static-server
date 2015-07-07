@@ -1,7 +1,5 @@
 #!/usr/bin/env node
 
-/* jshint multistr:true */
-
 /**
  * module dependencies
  */
@@ -9,23 +7,23 @@ var fs = require('fs');
 var util = require('util');
 var pathFn = require('path');
 var Server = require('../server');
+var open = require('open');
 
 // parse argv
 var argv = parseArgv();
 
 // output help msg
 if (argv.help) {
-  return console.log(
-    "\n\
-  Usage :\
-    \n\
-    http [option]\n\
-    \n\
-    -h|--help    帮助信息\n\
-    -p|--port    指定端口     默认随机端口\n\
-    -r|--root    指定根目录   默认当前目录\n\
-    \n"
-  );
+  return console.log(`
+  Usage :
+
+    http [options]
+    
+    -h|--help    帮助信息
+    -p|--port    指定端口     默认随机端口
+    -r|--root    指定根目录   默认当前目录
+
+  `);
 }
 
 
@@ -37,7 +35,9 @@ var s = new Server({
 s.listen().then(function(url) {
   process.title = "localhost@" + s.server.address().port;
   console.log("http-static-server served at " + url);
-  var cp = require('child_process').exec('start ' + url);
+
+  // open the default browser
+  open(url);
 }).catch(console.error);
 
 
