@@ -2,16 +2,16 @@
  * module dependencies
  */
 global.Promise = require('bluebird');
-global.co = require('co');
-global._ = require('lodash');
+var co = require('co');
+var _ = require('lodash');
 var http = require('http');
 var fs = Promise.promisifyAll(require('fs'));
 var pathFn = require('path');
 var util = require('util');
 var parse = require('url').parse;
 var zlib = require('zlib');
-var razor = require('razor-tmpl');
 var mime = require('mime');
+var bars = require('nodebars');
 
 // patch fs.existAsync
 fs.existsAsync = function(path) {
@@ -92,8 +92,7 @@ Server.prototype.requestListener = co.wrap(function * (req, res) {
 
     res.statusCode = 200;
     this.sendFile(req, res, fd);
-  }
-  catch (e) {
+  } catch (e) {
     console.error(e);
     console.error(e.stack);
     res.writeHead(500);
@@ -140,8 +139,7 @@ Server.prototype.sendFile = function(req, res, fd) {
   if (acc.indexOf('gzip') > -1) {
     res.setHeader("Content-Encoding", 'gzip');
     stream = stream.pipe(zlib.createGzip());
-  }
-  else if (acc.indexOf('deflate') > -1) {
+  } else if (acc.indexOf('deflate') > -1) {
     res.setHeader("Content-Encoding", 'deflate');
     stream = stream.pipe(zlib.createDeflate());
   }
@@ -173,7 +171,7 @@ Server.prototype.listDirAsync = co.wrap(function * (req, res) {
     dirs.sort();
     files.sort();
 
-    var html = razor.renderFileSync(__dirname + '/tmpl/index.html', {
+    var html = bars.renderFileSync(__dirname + '/tmpl/index.html', {
       url: url,
       parentdir: pathFn.dirname(url),
       dirs: dirs,
@@ -185,8 +183,7 @@ Server.prototype.listDirAsync = co.wrap(function * (req, res) {
     });
 
     res.end(html);
-  }
-  catch (e) {
+  } catch (e) {
     console.error("列出目录出错 : %s", url);
     console.error(e.stack || e);
     res.writeHead(404);
