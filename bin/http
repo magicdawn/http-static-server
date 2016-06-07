@@ -5,9 +5,7 @@
 /**
  * module dependencies
  */
-const fs = require('fs');
-const util = require('util');
-const pathFn = require('path');
+
 const open = require('open');
 const app = require('../');
 

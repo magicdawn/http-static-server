@@ -4,16 +4,9 @@
  * module deps
  */
 
-const http = require('http');
-const pify = require('promise.ify');
-const pathFn = require('path');
-const util = require('util');
-const parse = require('url').parse;
-const fs = pify.all(require('fs'));
-const co = require('co');
+const fs = require('promise.ify').all(require('fs'));
+const dirname = require('path').dirname;
 const _ = require('lodash');
-const zlib = require('zlib');
-const mime = require('mime');
 const swig = require('swig');
 const express = require('express');
 const modern = require('express-modern');
@@ -54,7 +47,7 @@ app.use(modern(function*(req, res, next) {
 
   const html = swig.renderFile(__dirname + '/tmpl/index.html', {
     url: req.path,
-    parentdir: pathFn.dirname(req.path),
+    parentdir: dirname(req.path),
     dirs: dirs,
     files: files
   });
