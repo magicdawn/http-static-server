@@ -8,8 +8,8 @@
 const fs = require('fs');
 const util = require('util');
 const pathFn = require('path');
-const Server = require('../server');
 const open = require('open');
+const app = require('../');
 
 // parse argv
 const argv = parseArgv();
@@ -29,19 +29,16 @@ if (argv.help) {
 }
 
 
-const s = new Server({
-  port: argv.port,
-  root: argv.root
-});
+app.listen(argv.port, function(){
+  const port = this.address().port;
+  const url = `http://localhost:${ port }`;
 
-s.listen().then(function(url) {
-  process.title = 'localhost@' + s.server.address().port;
+  process.title = url;
   console.log('http-static-server served at ' + url);
 
   // open the default browser
   open(url);
-}).catch(console.error);
-
+});
 
 function parseArgv() {
   const ret = {};
