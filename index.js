@@ -6,6 +6,8 @@
 
 const fs = require('promise.ify').all(require('fs'));
 const dirname = require('path').dirname;
+const basename = require('path').basename;
+const extname = require('path').extname;
 const _ = require('lodash');
 const swig = require('swig');
 const express = require('express');
@@ -20,7 +22,17 @@ const pwd = process.cwd();
 
 app.use(express.static(pwd, {
   dotfiles: 'allow',
-  index: false
+  index: false,
+  setHeaders: (res, path, stat) => {
+    if (/^\./.test(basename(path))) {
+      res.type('text');
+    }
+
+    const ext = extname(path).slice(1);
+    if(~['cson', 'less', 'py', 'rb'].indexOf(ext)) {
+      res.type('text');
+    }
+  }
 }));
 
 // list dir
