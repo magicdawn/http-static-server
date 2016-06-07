@@ -1,16 +1,18 @@
 #!/usr/bin/env node
 
+'use strict';
+
 /**
  * module dependencies
  */
-var fs = require('fs');
-var util = require('util');
-var pathFn = require('path');
-var Server = require('../server');
-var open = require('open');
+const fs = require('fs');
+const util = require('util');
+const pathFn = require('path');
+const Server = require('../server');
+const open = require('open');
 
 // parse argv
-var argv = parseArgv();
+const argv = parseArgv();
 
 // output help msg
 if (argv.help) {
@@ -18,7 +20,7 @@ if (argv.help) {
   Usage :
 
     http [options]
-    
+
     -h|--help    帮助信息
     -p|--port    指定端口     默认随机端口
     -r|--root    指定根目录   默认当前目录
@@ -27,14 +29,14 @@ if (argv.help) {
 }
 
 
-var s = new Server({
+const s = new Server({
   port: argv.port,
   root: argv.root
 });
 
 s.listen().then(function(url) {
-  process.title = "localhost@" + s.server.address().port;
-  console.log("http-static-server served at " + url);
+  process.title = 'localhost@' + s.server.address().port;
+  console.log('http-static-server served at ' + url);
 
   // open the default browser
   open(url);
@@ -42,21 +44,19 @@ s.listen().then(function(url) {
 
 
 function parseArgv() {
-  var ret = {};
-  var args = process.argv.slice(2);
+  const ret = {};
+  const args = process.argv.slice(2);
   if (!args) return ret;
 
-  for (var i = 0; i < args.length; i++) {
-    var arg = args[i];
+  for (let i = 0; i < args.length; i++) {
+    const arg = args[i];
 
-    if (arg == '-h' || arg == '--help') {
+    if (arg === '-h' || arg === '--help') {
       ret.help = true;
-    }
-    else if (arg == "--port" || arg == "-p") {
+    } else if (arg === '--port' || arg === '-p') {
       ret.port = +(args[++i]);
       continue;
-    }
-    else if (arg == '-r' || arg == "--root") {
+    } else if (arg === '-r' || arg === '--root') {
       ret.root = args[++i];
       continue;
     }
