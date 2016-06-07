@@ -59,7 +59,7 @@ app.use(modern(function*(req, res, next) {
 
   const html = swig.renderFile(__dirname + '/tmpl/index.html', {
     url: req.path,
-    parentdir: dirname(req.path),
+    parentdir: dirname(req.path.slice(0, -1)) || '/',
     dirs: dirs,
     files: files
   });

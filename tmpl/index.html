@@ -40,7 +40,8 @@
   <body>
     <h1 id='header'>Generated Index for {{ url }}</h1>
     <ul>
-      <li><a href='{{ parentDir }}' class='up'>返回上级</a></li>
+      <li><a href='{{ parentdir }}' class='up'>返回上级</a></li>
+
       {% for dir in dirs %}
         <li>
           <a href="{{ url }}{{ dir }}/" class='dir'>
