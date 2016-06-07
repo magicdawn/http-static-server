@@ -1,6 +1,6 @@
 {
   "name": "http-static-server",
-  "version": "0.0.3",
+  "version": "0.1.0",
   "description": "simple http static server",
   "main": "index.js",
   "bin": {
