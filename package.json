@@ -4,8 +4,8 @@
   "description": "simple http static server",
   "main": "index.js",
   "bin": {
-    "http": "./bin/http",
-    "http-static-server": "./bin/http"
+    "hss": "./bin/hss",
+    "http-static-server": "./bin/hss"
   },
   "scripts": {
     "test": "echo \"no test specified\""
@@ -22,6 +22,7 @@
     "express": "^4.13.4",
     "express-modern": "^0.3.0",
     "lodash": "^3.8.0",
+    "minimist": "^1.2.0",
     "open": "0.0.5",
     "promise.ify": "^0.3.0",
     "swig": "^1.4.2"

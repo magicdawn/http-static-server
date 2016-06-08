@@ -1,0 +1,58 @@
+#!/usr/bin/env node
+
+'use strict';
+
+/**
+ * module deps
+ */
+
+const path = require('path');
+const open = require('open');
+const setupApp = require('../');
+const argv = require('minimist')(process.argv.slice(2), {
+  boolean: ['open', 'help', 'index'],
+  alias: {
+    o: 'open',
+    r: 'root',
+    h: 'help',
+    i: 'index'
+  },
+  default: {
+    open: true,
+    help: false,
+    index: true,
+    root: process.cwd()
+  }
+});
+
+// output help msg
+if (argv.help) {
+  console.log(`
+  Usage :
+    http [options]
+
+  Options:
+    -h|--help    帮助信息
+    -p|--port    指定端口, 默认随机端口
+    -r|--root    指定根目录, 默认当前目录
+    -o|--open    是否使用默认浏览器打开, 默认 true
+    -i|--index   是否使用index.html, 默认 true
+
+  Homepage:
+    https://github.com/magicdawn/http-static-server#http-static-server
+  `);
+  process.exit(0);
+}
+
+const root = path.normalize(argv.root);
+const app = setupApp(root, argv.index);
+app.listen(argv.port, function() {
+  const port = this.address().port;
+  const url = `http://localhost:${ port }`;
+
+  process.title = url;
+  console.log('http-static-server served at ' + url);
+
+  // open the default browser
+  if (argv.open) open(url);
+});
