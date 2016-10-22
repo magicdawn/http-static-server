@@ -1,5 +1,8 @@
 # CHANGELOG
 
+## v0.2.2 2016-10-22
+- fix random port
+
 ## v0.2.1 2016-10-22
 - fix `-p` option, see #1
 
