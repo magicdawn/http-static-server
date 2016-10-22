@@ -22,7 +22,8 @@ const argv = require('minimist')(process.argv.slice(2), {
     open: true,
     help: false,
     index: true,
-    root: process.cwd()
+    root: process.cwd(),
+    port: 0
   }
 });
 
