@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## v0.2.3 2016-12-04
+- add `-e, --external` for external ip
+- update deps
+
 ## v0.2.2 2016-10-22
 - fix random port
 
