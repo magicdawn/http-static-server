@@ -37,11 +37,12 @@ if (argv.help) {
     http [options]
 
   Options:
-    -h, --help    帮助信息
-    -p, --port    指定端口, 默认随机端口
-    -r, --root    指定根目录, 默认当前目录
-    -o, --open    是否使用默认浏览器打开, 默认 true
-    -i, --index   是否使用index.html, 默认 true
+    -h, --help      帮助信息
+    -p, --port      指定端口, 默认随机端口
+    -r, --root      指定根目录, 默认当前目录
+    -o, --open      是否使用默认浏览器打开, 默认 true
+    -i, --index     是否使用index.html, 默认 true
+    -e, --external  是否使用外网ip, 默认 false
 
   Homepage:
     https://github.com/magicdawn/http-static-server#http-static-server

@@ -19,15 +19,15 @@
   "license": "MIT",
   "dependencies": {
     "co": "^4.5.4",
-    "express": "^4.13.4",
+    "express": "^4.14.0",
     "express-modern": "^0.3.0",
-    "lodash": "^3.8.0",
+    "lodash": "^4.17.2",
     "minimist": "^1.2.0",
     "open": "0.0.5",
     "promise.ify": "^0.3.0",
     "swig": "^1.4.2"
   },
   "devDependencies": {
-    "eslint": "^2.11.1"
+    "eslint": "^3.11.1"
   }
 }
