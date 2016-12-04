@@ -3,9 +3,10 @@
 'use strict'
 
 /**
- * module deps
+ * Module dependencies
  */
 
+const os = require('os')
 const path = require('path')
 const open = require('open')
 const setupApp = require('../')
@@ -17,7 +18,7 @@ const argv = require('minimist')(process.argv.slice(2), {
     h: 'help',
     i: 'index',
     p: 'port',
-    e: 'external'
+    e: 'external',
   },
   default: {
     open: true,
@@ -26,7 +27,7 @@ const argv = require('minimist')(process.argv.slice(2), {
     root: process.cwd(),
     port: 0,
     external: false,
-  }
+  },
 })
 
 // output help msg
@@ -51,8 +52,10 @@ if (argv.help) {
 const root = path.normalize(argv.root)
 const app = setupApp(root, argv.index)
 app.listen(argv.port, function() {
+  let host = 'localhost'
+  if (argv.external) host = getExternalIp()
   const port = this.address().port
-  const url = `http://localhost:${ port }`
+  const url = `http://${ host }:${ port }`
 
   process.title = url
   console.log('http-static-server served at ' + url)
@@ -60,3 +63,15 @@ app.listen(argv.port, function() {
   // open the default browser
   if (argv.open) open(url)
 })
+
+function getExternalIp() {
+  const obj = os.networkInterfaces()
+  for (let key in obj) {
+    for (let item of obj[key]) {
+      if (item.family === 'IPv4' && !item.internal) {
+        return item.address
+      }
+    }
+  }
+  return '127.0.0.1'
+}
