@@ -1,4 +1,6 @@
 # http-static-server
+
+[![Greenkeeper badge](https://badges.greenkeeper.io/magicdawn/http-static-server.svg)](https://greenkeeper.io/)
 zero config http static server.
 
 ## Install
